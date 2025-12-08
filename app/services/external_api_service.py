@@ -1,6 +1,6 @@
 from typing import Dict, Any
 import httpx
-from ..app.config import get_settings
+from ..config import get_settings
 from ..domain.models.conversation import Conversation
 from ..domain.models.buddy_state import BuddyState
 from ..domain.models.consent import ConsentRecord

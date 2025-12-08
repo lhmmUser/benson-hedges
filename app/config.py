@@ -1,23 +1,26 @@
-import os
-from pydantic import BaseSettings, AnyUrl
+from pydantic import AnyUrl
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
 
 class Settings(BaseSettings):
+    # pydantic-settings v2 style config
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        case_sensitive=True,
+    )
+
     MONGO_URI: AnyUrl = "mongodb://localhost:27017"
     MONGO_DB_NAME: str = "whatsapp_flow_db"
 
-    # Placeholder for external integrations
     WHATSAPP_PROVIDER_API_BASE: str = "https://example-whatsapp-provider"
     EXTERNAL_API_BASE: str = "https://example-external-api"
 
-    class Config:
-        env_file = ".env"
-        case_sensitive = True
+
+_settings: Settings | None = None
+
 
 def get_settings() -> Settings:
-    # Simple singleton-ish pattern
     global _settings
-    try:
-        return _settings
-    except NameError:
+    if _settings is None:
         _settings = Settings()
-        return _settings
+    return _settings
